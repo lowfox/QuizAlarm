@@ -10,12 +10,13 @@
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:checked="true"
         android:showText="true"
         android:text="アラーム"
         android:textOff="OFF"
-        android:textOn="ON" />
+        android:textOn="ON"
+        android:switchMinWidth="70dp"/>
     <Button
         android:id="@+id/BtBack"
         android:layout_width="wrap_content"
