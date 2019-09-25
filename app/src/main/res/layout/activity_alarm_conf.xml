@@ -7,6 +7,21 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <TextClock
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="40dp"
+        android:timeZone="Asia/Tokyo"
+        android:format24Hour="yyyy:MM:dd"
+        android:format12Hour="yyyy:MM:dd"/>
+
+    <TextClock
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="70dp"
+        android:timeZone="Asia/Tokyo"
+        android:format24Hour="HH:mm:ss"
+        android:format12Hour="HH:mm:ss"/>
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"

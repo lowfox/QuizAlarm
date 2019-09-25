@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+
     <Button
         android:id="@+id/BtConfAlarm"
         android:layout_width="wrap_content"
