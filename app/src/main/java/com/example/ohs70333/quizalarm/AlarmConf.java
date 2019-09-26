@@ -4,73 +4,124 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.VideoView;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 public class AlarmConf extends AppCompatActivity {
-    Context c;
-    AlarmManager am;
-    private PendingIntent mAlarmSender;
-
-
-    private static final String TAG = AlarmConf.class.getSimpleName();
+Spinner spnTime;
+Spinner spnMin;
+int setTime;
+int setMin;
+private String times[]={"１","２","３","４","５","６","７","８","９","１０","１１","１２","１３","１４","１５","１６","１７","１８","１９","２０","２１","２２","２３","２４"};
+private String mins[]={"０","１","２","３","４","５","６","７","８","９","１０","１１","１２","１３","１４","１５","１６","１７","１８","１９","２０","２１","２２","２３","２４","２５","２６","２７","２８","２９","３０","３１","３２","３３","３４","３５","３６","３７","３８","３９","４０","４１","４２","４３","４４","４５","４６","４７","４８","４９","５０","５１","５２","５３","５４","５５","５６","５７","５８","５９"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_conf);
 
-        // 初期化
-        this.c = c;
-        am = (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
-        Log.v(TAG,"初期化完了");
+        spnTime=(Spinner)findViewById(R.id.SpnTime);
+        spnMin=(Spinner)findViewById(R.id.SpnMin);
+
+
+        //////////////////////////プルダウン: 時間///////////////////
+
+
+        //ArrayAdapter
+        ArrayAdapter<String> adapter_time = new ArrayAdapter<String>(
+               this,
+                android.R.layout.simple_spinner_item,
+                times
+        );
+
+
+        adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // spinner に adapter をセット
+        spnTime.setAdapter(adapter_time);
+
+        // リスナーを登録
+        spnTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                setTime = position + 1;
+                //Toast.makeText(AlarmConf.this , setTime, Toast.LENGTH_SHORT).show();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+                //
+            }
+        });
+
+        //////////////////////////プルダウン: 分///////////////////
+
+
+        //ArrayAdapter
+        ArrayAdapter<String> adapter_min = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                mins
+        );
+
+
+        adapter_min.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // spinner に adapter をセット
+        spnMin.setAdapter(adapter_min);
+
+        // リスナーを登録
+        spnMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                setMin = position;
+                //Toast.makeText(AlarmConf.this , setTime, Toast.LENGTH_SHORT).show();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+                //
+            }
+        });
+
 
     }
 
-    public void addAlarm(int alarmHour, int alarmMinute){
-        // アラームを設定する
-        mAlarmSender = this.getPendingIntent();
 
-        // アラーム時間設定
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        // 設定した時刻をカレンダーに設定
-        cal.set(Calendar.HOUR_OF_DAY, alarmHour);
-        cal.set(Calendar.MINUTE, alarmMinute);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+    public void BtConf(View view){
 
-        // 過去だったら明日にする
-        if(cal.getTimeInMillis() < System.currentTimeMillis()){
-            cal.add(Calendar.DAY_OF_YEAR, 1);
-        }
-        Toast.makeText(c, String.format("%02d時%02d分に起こします", alarmHour, alarmMinute), Toast.LENGTH_LONG).show();
+        MyAlarmManager alrmMam = new MyAlarmManager(AlarmConf.this);
 
-        am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), mAlarmSender);
-        Log.v(TAG, cal.getTimeInMillis()+"ms");
-        Log.v(TAG, "アラームセット完了");
+
+        alrmMam.addAlarm(setTime,setMin);
     }
 
-    public void stopAlarm() {
-        // アラームのキャンセル
-        Log.d(TAG, "stopAlarm()");
-        am.cancel(mAlarmSender);
+    public void BtCancel(View view){
 
+        MyAlarmManager alrmMam = new MyAlarmManager(AlarmConf.this);
+
+
+        alrmMam.stopAlarm();
+        Toast.makeText(AlarmConf.this, String.format("アラームをキャンセルしました"), Toast.LENGTH_LONG).show();
     }
-
-    private PendingIntent getPendingIntent() {
-        // アラーム時に起動するアプリケーションを登録
-        Intent intent = new Intent(c, MyAlarmService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(c, PendingIntent.FLAG_ONE_SHOT, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
-    }
-
     public void BtBack(View view){
         finish();
     }
+
 }
 

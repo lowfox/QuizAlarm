@@ -16,8 +16,10 @@ public class QuizConf extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_conf);
 
+
+
         //////////////////////////プルダウン：出題範囲///////////////////
-        Spinner spn_quiz_select = findViewById(R.id.SpnQuizSelect);
+        Spinner spn_quiz_select = (Spinner) findViewById(R.id.SpnQuizSelect);
         //ArrayAdapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -49,7 +51,7 @@ public class QuizConf extends AppCompatActivity {
 
 
         ////////////////////////プルダウン：問題数//////////////////////////////////
-        Spinner spn_quiz_num = findViewById(R.id.SpnQuizNum);
+        Spinner spn_quiz_num = (Spinner)findViewById(R.id.SpnQuizNum);
         //ArrayAdapter
         ArrayAdapter<String> adapter_num = new ArrayAdapter<>(
                 this,
